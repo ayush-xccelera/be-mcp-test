@@ -17,6 +17,12 @@ class HealthResponse(BaseModel):
     status: Literal["ok"]
 
 
+class VersionResponse(BaseModel):
+    """Response schema returned by the service version endpoint."""
+
+    version: Literal["1.0.0"]
+
+
 def get_healthy_response() -> HealthResponse:
     """Return the service health response."""
     return HealthResponse(status="ok")
@@ -34,3 +40,10 @@ def health() -> HealthResponse:
     """Provide the deployment-required unauthenticated health probe."""
     logger.info("Health status requested at /health")
     return get_healthy_response()
+
+
+@app.get("/version", response_model=VersionResponse)
+def version() -> VersionResponse:
+    """Return the current service version."""
+    logger.info("Service version requested at /version")
+    return VersionResponse(version="1.0.0")
